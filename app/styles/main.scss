@@ -92,11 +92,17 @@ body {
   }
 }
 
-.reactions-list {
+.controls {
   text-align: center;
-  li {
+  &>div {
     display: inline-block;
     vertical-align: top;
+  }
+  button {
+    border: 0;
+    // &:disabled {
+    //   background-image: none;
+    // }
   }
 }
 

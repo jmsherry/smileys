@@ -29,29 +29,26 @@
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
   <div class="container">
-    <ul class="list-unstyled reactions-list">
-      <li>
-        <a class="emotion sad" href="#">
+    <div class="controls">
+      <div class="reaction">
+        <button class="emotion sad">
           <span class="sr-only">Happy</span>
-        </a>
+        </button>
         <div class="counter sad-counter"></div>
-      </li>
-      <li>
-        <a class="emotion normal" href="#">
+      </div>
+      <div class="reaction">
+        <button disabled class="emotion normal">
           <span class="sr-only">Normal</span>
-        </a>
+        </button>
         <div class="counter normal-counter"></div>
-      </li>
-      <li>
-        <a class="emotion happy" href="#">
+      </div>
+      <div class="reaction">
+        <button class="emotion happy">
           <span class="sr-only">Sad</span>
-        </a>
+        </button>
         <div class="counter happy-counter"></div>
-      </li>
-    </ul>
-
-
-
+      </div>
+    </div>
   </div>
 
   <!-- build:js scripts/vendor.js -->
