@@ -91,3 +91,34 @@ body {
     border-bottom: 0;
   }
 }
+
+.reactions-list {
+  text-align: center;
+  li {
+    display: inline-block;
+    vertical-align: top;
+  }
+}
+
+.emotion {
+  width: 100px;
+  height: 100px;
+  background: transparent url(./../images/faces.jpg) no-repeat center left scroll;
+  display: block;
+}
+
+.sad {
+  background-position: -25px center;
+}
+
+.normal {
+  background-position: -230px center;
+}
+
+.happy {
+  background-position: -442px center;
+}
+
+.counter {
+  font-size: 2rem;
+}

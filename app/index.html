@@ -29,67 +29,30 @@
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
   <div class="container">
-    <h1>Firebase Demo</h1>
-    <h2>Score Table</h2>
-    <table class="table" id="score-table">
-      <thead>
-        <tr>
-          <th>Team 1</th>
-          <th>Score</th>
-          <th>Team 2</th>
-          <th>Score</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
-<hr>
-<h2>Score a Match</h2>
-    <form id="score-form">
-      <div class="row">
-        <div class="col-sm-6">
-          <div class="form-group">
-            <label for="name1">Team Name 1</label>
-            <input type="text" id="name1" name="name1" class="form-control">
-          </div>
-          <div class="form-group">
-            <label for="score1">Score</label>
-            <input type="number" id="score1" name="score1" class="form-control">
-          </div>
-        </div>
-        <div class="col-sm-6">
-          <div class="form-group">
-            <label for="name2">Team Name 2</label>
-            <input type="text" id="name2" name="name2" class="form-control">
-          </div>
-          <div class="form-group">
-            <label for="score2">Score</label>
-            <input type="number" id="score2" name="score2" class="form-control">
-          </div>
-          <div class="form-group">
-            <button type="submit" class="btn btn-primary pull-right">Add Score</button>
-          </div>
-        </div>
-      </div>
-    </form>
+    <ul class="list-unstyled reactions-list">
+      <li>
+        <a class="emotion sad" href="#">
+          <span class="sr-only">Happy</span>
+        </a>
+        <div class="counter sad-counter"></div>
+      </li>
+      <li>
+        <a class="emotion normal" href="#">
+          <span class="sr-only">Normal</span>
+        </a>
+        <div class="counter normal-counter"></div>
+      </li>
+      <li>
+        <a class="emotion happy" href="#">
+          <span class="sr-only">Sad</span>
+        </a>
+        <div class="counter happy-counter"></div>
+      </li>
+    </ul>
+
+
+
   </div>
-  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-  <script>
-    (function(b, o, i, l, e, r) {
-      b.GoogleAnalyticsObject = l;
-      b[l] || (b[l] =
-        function() {
-          (b[l].q = b[l].q || []).push(arguments)
-        });
-      b[l].l = +new Date;
-      e = o.createElement(i);
-      r = o.getElementsByTagName(i)[0];
-      e.src = 'https://www.google-analytics.com/analytics.js';
-      r.parentNode.insertBefore(e, r)
-    }(window, document, 'script', 'ga'));
-    ga('create', 'UA-XXXXX-X');
-    ga('send', 'pageview');
-  </script>
 
   <!-- build:js scripts/vendor.js -->
   <!-- bower:js -->

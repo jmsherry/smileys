@@ -11,80 +11,63 @@ $(function() {
   // 'firebase' is the global created by loading the script
   firebase.initializeApp(config);
 
-  var $table = $('#score-table');
+  /*******
+  * GLOBALS
+  ********/
+  var results = {
+    happy: 0,
+    normal: 0,
+    sad: 0
+  };
+  /*******
+  * ELEMENTS
+  *******/
+  // Faces
+  var $sadFace = $('.sad');
+  var $normalFace = $('.normal');
+  var $happyFace = $('.happy');
 
-  function UpdateScoreTable(data) {
-    console.log('in UpdateScoreTable', data);
-    var $tableBody = $table.find('tbody');
-    $tableBody.html('');
-    if (!data || data.length === 0) {
-      $tableBody.append('<tr><td colspan="4">No data to display</td></tr>');
-      return;
-    }
+  // Counters
+  var $sadCounter = $('.sad-counter');
+  var $normalCounter = $('.normal-counter');
+  var $happyCounter = $('.happy-counter');
 
-    var rowString = '';
+  /*******
+  * HANDLERS
+  *******/
 
-    if (typeof data.forEach !== 'function'){
-      $tableBody.append('<tr><td colspan="4" class="alert alert-danger">Error: Data in wrong format.</td></tr>');
-      console.error('Data in wrong format');
-      return;
-    }
+  function handler(type, $e) {
+    console.log(arguments);
+    var updates = {};
+    updates[type] = results[type]+=1;
 
-    data.forEach(function(match){
-      // console.log(match);
-      rowString += '<tr>';
-
-      for (var team in match) {
-        if( match.hasOwnProperty( team ) ) {
-          // console.log(team, match[team]);
-          rowString += '<td>' + team + '</td>';
-          rowString += '<td>' + match[team] + '</td>';
-        }
-      }
-      rowString += '</tr>';
-    });
-
-    $tableBody.append(rowString);
-
+    return firebase.database().ref().update(updates);
   }
 
-  // Setup what happens when data changes
-  firebase.database().ref('matches').on('value', function(snapshot) {
-    // console.log('val', snapshot.val());
-    var matches = snapshot.val();
-    UpdateScoreTable(matches);
-  });
+  // Bind Handlers
+  // .bind() allows you to specify arguments to be passed to functions when they are exectuted later. See https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_objects/Function/bind for more
+  $sadFace.on('click.sad', handler.bind(null, 'sad'));
+  $normalFace.on('click.normal', handler.bind(null, 'normal'));
+  $happyFace.on('click.happy', handler.bind(null, 'happy'));
 
-  var $scoreForm = $('#score-form');
-  var $team1Name = $('#name1');
-  var $team2Name = $('#name2');
-  var $team1Score = $('#score1');
-  var $team2Score = $('#score2');
-  var $inputs = $scoreForm.find('input');
 
-  $scoreForm.on('submit', function(e) {
-    // e.preventDefault();
-  var newMatch = {};
-  // console.log($team1Name, $team1Score);
-  // console.log($team2Name, $team2Score);
-  newMatch[$team1Name.val()] = $team1Score.val();
-  newMatch[$team2Name.val()] = $team2Score.val();
-  console.log('newMatch', newMatch);
+  /********
+  * Updating the UI
+  ********/
 
-   var newPostKey =
-    firebase.database().ref().child('matches').push().key;
+  // Update each display
+  function updateUI(values){
+    $sadCounter.text(results.sad);
+    $normalCounter.text(results.normal);
+    $happyCounter.text(results.happy);
+  }
 
-   console.log('newPostKey', newPostKey);
-
-   var updates = {};
-  updates['/matches/' + newPostKey] = newMatch;
-
-  firebase.database().ref().update(updates);
-
-  // reset form
-  $inputs.val('');
-
-  return false;
+  // handle new data
+  firebase.database().ref().on('value', function(snapshot){
+    var vals = snapshot.val();
+    console.log('vals', vals);
+    results = vals;
+    updateUI();
   });
 
 });
