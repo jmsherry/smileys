@@ -2,21 +2,31 @@
 
 ##Create
 ```
+// creating 'OK'
+var updates = {};
+updates['/ok/'] = 0;
+
+return firebase.database().ref().update(updates);
 ```
 
 ##Read
 ```
-firebase.database().ref('matches').on('value', function(snapshot) {
-  // console.log('val', snapshot.val());
-  var matches = snapshot.val();
-  UpdateScoreTable(matches);
+firebase.database().ref().on('value', function(snapshot){
+  var vals = snapshot.val();
+  results = vals;
+  updateUI();
 });
 ```
 
 ##Update
 ```
+var updates = {};
+updates[type] = results[type]+=1;
+
+return firebase.database().ref().update(updates);
 ```
 
 ##Delete
 ```
+firebase.database().ref().child('ok').remove();
 ```
