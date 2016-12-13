@@ -128,3 +128,10 @@ body {
 .counter {
   font-size: 2rem;
 }
+
+.messages {
+  list-style: none;
+  li {
+    // display: none;
+  }
+}

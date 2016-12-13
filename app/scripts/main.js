@@ -11,19 +11,37 @@ $(function() {
   // 'firebase' is the global created by loading the script
   firebase.initializeApp(config);
 
-  /*******
+
+
+  /*************
   * APPLICATION STATE
-  ********/
-  var results = {
-    happy: 0,
-    normal: 0,
-    sad: 0
-  };
+  *************/
+var appState = {
+  connected: false,
+  results: {
+      happy: 0,
+      normal: 0,
+      sad: 0
+    }
+}
+
+ /***********
+ * Helper Functions
+ ***********/
+ function handleConnection(state) {
+   disableButtons(state);
+   displayMessages(state);
+ }
 
   /*******
   * ELEMENTS
   *******/
+  // Messages
+  var $messages = $('.messages');
+  var $connectionWarning = $('.connectionWarning');
+
   // Faces
+  var $faces = $('.emotion');
   var $sadFace = $('.sad');
   var $normalFace = $('.normal');
   var $happyFace = $('.happy');
@@ -37,19 +55,18 @@ $(function() {
   * HANDLERS
   *******/
 
-  function handler(type, $e) {
+  function updateScores(type, $e) {
     console.log(arguments);
     var updates = {};
-    updates[type] = results[type]+=1;
-
-    return firebase.database().ref().update(updates);
+    updates[type] = appState.results[type]+=1;
+    firebase.database().ref().update(updates);
   }
 
   // Bind Handlers
   // .bind() allows you to specify arguments to be passed to functions when they are exectuted later. See https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_objects/Function/bind for more
-  $sadFace.on('click.sad', handler.bind(null, 'sad'));
-  $normalFace.on('click.normal', handler.bind(null, 'normal'));
-  $happyFace.on('click.happy', handler.bind(null, 'happy'));
+  $sadFace.on('click.sad', updateScores.bind(null, 'sad'));
+  $normalFace.on('click.normal', updateScores.bind(null, 'normal'));
+  $happyFace.on('click.happy', updateScores.bind(null, 'happy'));
 
 
   /********
@@ -58,17 +75,53 @@ $(function() {
 
   // Update each display
   function updateUI(values){
-    $sadCounter.text(results.sad);
-    $normalCounter.text(results.normal);
-    $happyCounter.text(results.happy);
+    $sadCounter.text(appState.results.sad);
+    $normalCounter.text(appState.results.normal);
+    $happyCounter.text(appState.results.happy);
+  }
+
+  // Display UI Messages
+  function displayMessages(type) {
+    switch(type) {
+      case 'disconnected':
+      $connectionWarning.show();
+      break;
+      case 'connected':
+      $connectionWarning.hide();
+      break;
+    }
+  }
+
+  // Enable/Disable Buttons
+  function disableButtons(val) {
+    switch(val){
+      case 'disconnected':
+      $faces.prop('disabled', 'disabled');
+      break;
+      case 'connected':
+      $faces.prop('disabled', '');
+      break;
+    }
   }
 
   // handle new data
   firebase.database().ref().on('value', function(snapshot){
     var vals = snapshot.val();
     console.log('vals', vals);
-    results = vals;
+    appState.results = vals;
+    localStorage.setItem('appState', appState);
+    localStorage.setItem
     updateUI();
+  });
+
+  // Deal with disconnection
+  var connectedRef = firebase.database().ref('.info/connected');
+  connectedRef.on('value', function(snap) {
+    if (snap.val() === true) {
+      handleConnection('connected');
+    } else {
+      handleConnection('disconnected');
+    }
   });
 
 });
