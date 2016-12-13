@@ -12,13 +12,14 @@ $(function() {
   firebase.initializeApp(config);
 
   /*******
-  * GLOBALS
+  * APPLICATION STATE
   ********/
   var results = {
     happy: 0,
     normal: 0,
     sad: 0
   };
+
   /*******
   * ELEMENTS
   *******/
